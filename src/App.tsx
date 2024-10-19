@@ -4,13 +4,28 @@ import { Patient } from './types/Patient';
 
 import { DataGrid } from '@mui/x-data-grid';
 import { getPatients } from './services/api';
+import { mockPatients } from './mockPatients';
+
+// Check the environment variable
+const useMockData = process.env.REACT_APP_USE_MOCK_DATA === 'true';
 
 function App() {
   const [patients, setPatients] = useState<Patient[]>([]);
+
   const fetchPatients = async () => {
     try {
-      const data = await getPatients();
-      setPatients(data);
+      if (useMockData) {
+        setPatients(mockPatients);
+      } else {
+        const data = await getPatients();
+        var iter = 0
+        for (const patient of data) {
+          iter += 1
+          patient.id = iter.toString()
+        }
+        setPatients(data);
+        console.log('Fetched patients:', data);
+      }
     } catch (error) {
       console.error('Error fetching patients:', error);
     }

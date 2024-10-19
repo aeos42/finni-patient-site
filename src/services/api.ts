@@ -1,72 +1,80 @@
 import { Patient } from '../types/Patient';
 
-// Update mockPatients to adhere to the Patient interface
-const mockPatients: Patient[] = [
-  {
-    id: '1',
-    firstName: 'John',
-    lastName: 'Doe',
-    dateOfBirth: new Date('1980-01-15'),
-    status: 'Active',
-    address: '123 Main St, Anytown, USA',
-    extraFields: ''
-  },
-  {
-    id: '2',
-    firstName: 'Jane',
-    lastName: 'Smith',
-    dateOfBirth: new Date('1992-05-22'),
-    status: 'Onboarding',
-    address: '456 Elm St, Othertown, USA',
-    extraFields: ''
-  },
-  {
-    id: '3',
-    firstName: 'Bob',
-    lastName: 'Johnson',
-    dateOfBirth: new Date('1975-11-30'),
-    status: 'Active',
-    address: '789 Oak Ave, Somewhere, USA',
-    extraFields: ''
-  }
-];
+const API_BASE_URL = 'http://localhost:3000';
 
-
-// Helper function to simulate network delay
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-// Mock API function to get all patients
+// Function to get all patients from the backend
 export const getPatients = async (): Promise<Patient[]> => {
-  await delay(500); // Simulate network delay
-  return mockPatients;
+  try {
+    console.log(`Fetching patients from ${API_BASE_URL}/patients`);
+    const response = await fetch(`${API_BASE_URL}/patients`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching patients:', error);
+    throw error;
+  }
+
 };
 
-// Mock API function to get a patient by ID
+// Function to get a patient by ID
 export const getPatientById = async (id: string): Promise<Patient | undefined> => {
-  await delay(300); // Simulate network delay
-  return mockPatients.find(p => p.id === id);
-};
-
-// Mock API function to add a new patient
-export const addPatient = async (patient: Omit<Patient, 'id'>): Promise<Patient> => {
-  await delay(400); // Simulate network delay
-  const newPatient = {
-    ...patient,
-    id: (mockPatients.length + 1).toString()
-  };
-  mockPatients.push(newPatient);
-  return newPatient;
-};
-
-// Mock API function to update a patient
-export const updatePatient = async (patient: Patient): Promise<Patient> => {
-  await delay(400); // Simulate network delay
-  const index = mockPatients.findIndex(p => p.id === patient.id);
-  if (index !== -1) {
-    mockPatients[index] = patient;
-    return patient;
-  } else {
-    throw new Error('Patient not found');
+  try {
+    const response = await fetch(`${API_BASE_URL}/patients/${id}`);
+    if (!response.ok) {
+      if (response.status === 404) {
+        return undefined;
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error fetching patient with id ${id}:`, error);
+    throw error;
   }
 };
 
+// Function to add a new patient
+export const addPatient = async (patient: Omit<Patient, 'id'>): Promise<Patient> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/patients`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(patient),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error adding patient:', error);
+    throw error;
+  }
+};
+
+// Function to update a patient
+export const updatePatient = async (patient: Patient): Promise<Patient> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/patients/${patient.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(patient),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error updating patient:', error);
+    throw error;
+  }
+};
