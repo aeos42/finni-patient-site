@@ -19,23 +19,23 @@ export const getPatients = async (): Promise<Patient[]> => {
 
 };
 
-// // Function to get a patient by ID
-// export const getPatientById = async (id: string): Promise<Patient | undefined> => {
-//   try {
-//     const response = await fetch(`${API_BASE_URL}/patients/${id}`);
-//     if (!response.ok) {
-//       if (response.status === 404) {
-//         return undefined;
-//       }
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error(`Error fetching patient with id ${id}:`, error);
-//     throw error;
-//   }
-// };
+// Function to get a patient by ID
+export const getPatientById = async (patientId: string): Promise<Patient | undefined> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/patients/${patientId}`);
+    if (!response.ok) {
+      if (response.status === 404) {
+        return undefined;
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error fetching patient with id ${patientId}:`, error);
+    throw error;  
+  }
+};
 
 // // Function to add a new patient
 // export const addPatient = async (patient: Omit<Patient, 'id'>): Promise<Patient> => {
