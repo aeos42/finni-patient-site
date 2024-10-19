@@ -17,12 +17,7 @@ function App() {
       if (useMockData) {
         setPatients(mockPatients);
       } else {
-        const data = await getPatients();
-        var iter = 0
-        for (const patient of data) {
-          iter += 1
-          patient.id = iter.toString()
-        }
+        const data = await getPatients();    
         setPatients(data);
         console.log('Fetched patients:', data);
       }
@@ -38,9 +33,10 @@ function App() {
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
+        getRowId={(row) => row.patientId}
         rows={patients}
         columns={[
-          { field: 'id', headerName: 'ID', width: 70 },
+          { field: 'patientId', headerName: 'ID', width: 70 },
           { field: 'firstName', headerName: 'First Name', width: 130 },
           { field: 'lastName', headerName: 'Last Name', width: 130 },
           { field: 'dateOfBirth', headerName: 'Date of Birth', width: 130 },

@@ -19,62 +19,62 @@ export const getPatients = async (): Promise<Patient[]> => {
 
 };
 
-// Function to get a patient by ID
-export const getPatientById = async (id: string): Promise<Patient | undefined> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/patients/${id}`);
-    if (!response.ok) {
-      if (response.status === 404) {
-        return undefined;
-      }
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`Error fetching patient with id ${id}:`, error);
-    throw error;
-  }
-};
+// // Function to get a patient by ID
+// export const getPatientById = async (id: string): Promise<Patient | undefined> => {
+//   try {
+//     const response = await fetch(`${API_BASE_URL}/patients/${id}`);
+//     if (!response.ok) {
+//       if (response.status === 404) {
+//         return undefined;
+//       }
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error(`Error fetching patient with id ${id}:`, error);
+//     throw error;
+//   }
+// };
 
-// Function to add a new patient
-export const addPatient = async (patient: Omit<Patient, 'id'>): Promise<Patient> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/patients`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(patient),
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error adding patient:', error);
-    throw error;
-  }
-};
+// // Function to add a new patient
+// export const addPatient = async (patient: Omit<Patient, 'id'>): Promise<Patient> => {
+//   try {
+//     const response = await fetch(`${API_BASE_URL}/patients`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(patient),
+//     });
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error('Error adding patient:', error);
+//     throw error;
+//   }
+// };
 
-// Function to update a patient
-export const updatePatient = async (patient: Patient): Promise<Patient> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/patients/${patient.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(patient),
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error updating patient:', error);
-    throw error;
-  }
-};
+// // Function to update a patient
+// export const updatePatient = async (patient: Patient): Promise<Patient> => {
+//   try {
+//     const response = await fetch(`${API_BASE_URL}/patients/${patient.id}`, {
+//       method: 'PUT',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(patient),
+//     });
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error('Error updating patient:', error);
+//     throw error;
+//   }
+// };
