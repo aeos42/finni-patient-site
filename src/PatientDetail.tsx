@@ -13,13 +13,47 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Grid2'
 import { Patient } from './types/Patient';
-import { getPatientById } from './services/api'; // You'll need to implement this function
+import { getPatientById, updatePatient } from './services/api';
+
 import ButtonBar from './components/ButtonBar';
+import SwitchableField from './components/SwitchableField';
+
+
 
 function PatientDetail() {
   const { patientId } = useParams();
   const [patient, setPatient] = useState<Patient | null>(null);
   const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [editedPatient, setEditedPatient] = useState<Patient | null>(null);
+
+  useEffect(() => {
+    if (patient) {
+      setEditedPatient({ ...patient });
+    }
+  }, [patient]);
+
+  const handleSave = async () => {
+    try {
+      if (editedPatient) {
+        const updatedPatient = await updatePatient(editedPatient);
+        setPatient(updatedPatient);
+        console.log('Patient data updated successfully:', updatedPatient);
+        setEditing(false);
+      } else {
+        console.error('Edited patient data is null');
+      }
+    } catch (error) {
+      console.error('Error updating patient data:', error);
+      // Handle the error (e.g., show an error message to the user)
+    }
+  };
+
+  const handleFieldChange = (field: keyof Patient, value: string) => {
+    if (editedPatient) {
+      setEditedPatient({ ...editedPatient, [field]: value });
+    }
+  };
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -66,7 +100,15 @@ function PatientDetail() {
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
       <ButtonBar>
-        <Button variant="contained">Edit Patient</Button>
+        <Button variant="contained" onClick={() => {
+          if (editing) {
+            handleSave();
+          }
+          setEditing(!editing);
+        }}>
+          {editing ? 'Save' : 'Edit Patient'}
+        </Button>
+        {editing && <Button variant="contained" onClick={() => setEditing(!editing)}>Cancel</Button>}
       </ButtonBar>
       <Paper elevation={3} sx={{ p: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom>
@@ -76,33 +118,41 @@ function PatientDetail() {
           <Grid size={8}>
             <List>
               <ListItem>
-                <ListItemText primary="First Name" secondary={patient.firstName} />
+                {SwitchableField(
+                  editing,
+                  'First Name',
+                  editedPatient?.firstName || '',
+                  (value: string) => handleFieldChange('firstName', value)
+                )}
               </ListItem>
-            </List>
-            <List>
               <ListItem>
-                <ListItemText primary="Last Name" secondary={patient.lastName} />
+                {SwitchableField(
+                  editing,
+                  'Last Name',
+                  editedPatient?.lastName || '',
+                  (value: string) => handleFieldChange('lastName', value)
+                )}
               </ListItem>
-            </List>
-            <List>
-              <ListItem>
-                <ListItemText primary="DOB" secondary={formatDate(patient.dateOfBirth)} />
-              </ListItem>
-            </List>
-            <List>
-              <ListItem>
-                <ListItemText primary="Status" secondary={patient.status} />
-              </ListItem>
-            </List>
-            <List>
-              <ListItem>
-                <ListItemText primary="Address" secondary={patient.address} />
-              </ListItem>
-            </List>
-            <List>
-              <ListItem>
-                <ListItemText primary="Patient ID" secondary={patient.patientId} />
-              </ListItem>
+              <List>
+                <ListItem>
+                  <ListItemText primary="DOB" secondary={formatDate(patient.dateOfBirth)} />
+                </ListItem>
+              </List>
+              <List>
+                <ListItem>
+                  <ListItemText primary="Status" secondary={patient.status} />
+                </ListItem>
+              </List>
+              <List>
+                <ListItem>
+                  <ListItemText primary="Address" secondary={patient.address} />
+                </ListItem>
+              </List>
+              <List>
+                <ListItem>
+                  <ListItemText primary="Patient ID" secondary={patient.patientId} />
+                </ListItem>
+              </List>
             </List>
           </Grid>
         </Grid>

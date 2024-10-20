@@ -58,23 +58,23 @@ export const getPatientById = async (patientId: string): Promise<Patient | undef
 //   }
 // };
 
-// // Function to update a patient
-// export const updatePatient = async (patient: Patient): Promise<Patient> => {
-//   try {
-//     const response = await fetch(`${API_BASE_URL}/patients/${patient.id}`, {
-//       method: 'PUT',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(patient),
-//     });
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error('Error updating patient:', error);
-//     throw error;
-//   }
-// };
+// Function to update a patient
+export const updatePatient = async (patient: Patient): Promise<Patient> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/patients/${patient.patientId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(patient),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error updating patient:', error);
+    throw error;
+  }
+};
