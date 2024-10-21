@@ -20,7 +20,7 @@ import ButtonBar from './components/ButtonBar';
 import SwitchableField from './components/SwitchableField';
 import SwitchableExtraField from './components/SwitchableExtraField';
 import AddCustomFieldModal from './components/AddCustomFieldModal';
-
+import SwitchableDateField from './components/SwitchableDateField';
 
 
 function PatientDetail() {
@@ -121,10 +121,6 @@ function PatientDetail() {
     );
   }
 
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString();
-  };
-
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
@@ -163,7 +159,12 @@ function PatientDetail() {
                 )}
               </ListItem>
               <ListItem>
-                <ListItemText primary="DOB" secondary={formatDate(editedPatient?.dateOfBirth || new Date())} />
+                {SwitchableDateField(
+                  editing,
+                  'DOB',
+                  editedPatient?.dateOfBirth || new Date(),
+                  (value: Date) => handleFieldChange('dateOfBirth', value.toISOString())
+                )}
               </ListItem>
               <ListItem>
                 <ListItemText primary="Status" secondary={editedPatient?.status || ''} />
