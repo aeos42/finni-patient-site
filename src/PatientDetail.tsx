@@ -21,7 +21,7 @@ import SwitchableField from './components/SwitchableField';
 import SwitchableExtraField from './components/SwitchableExtraField';
 import AddCustomFieldModal from './components/AddCustomFieldModal';
 import SwitchableDateField from './components/SwitchableDateField';
-
+import SwitchableDropdown from './components/SwitchableDropDown';
 
 function PatientDetail() {
   const { patientId } = useParams();
@@ -167,7 +167,13 @@ function PatientDetail() {
                 )}
               </ListItem>
               <ListItem>
-                <ListItemText primary="Status" secondary={editedPatient?.status || ''} />
+                {SwitchableDropdown(
+                  editing,
+                  'Status',
+                  editedPatient?.status || '',
+                  ['Active', 'Inactive', 'Pending'],
+                  (value: string) => handleFieldChange('status', value)
+                )}
               </ListItem>
               <ListItem>
                 <ListItemText primary="Address" secondary={editedPatient?.address || ''} />
