@@ -9,7 +9,8 @@ import {
   ListItemText, 
   Divider,
   CircularProgress,
-  Button
+  Button,
+  IconButton
 } from '@mui/material';
 import Grid from '@mui/material/Grid2'
 import { Patient } from './types/Patient';
@@ -17,6 +18,8 @@ import { getPatientById, updatePatient } from './services/api';
 
 import ButtonBar from './components/ButtonBar';
 import SwitchableField from './components/SwitchableField';
+import SwitchableExtraField from './components/SwitchableExtraField';
+import AddCustomFieldModal from './components/AddCustomFieldModal';
 
 
 
@@ -26,6 +29,7 @@ function PatientDetail() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [editedPatient, setEditedPatient] = useState<Patient | null>(null);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     if (patient) {
@@ -45,13 +49,38 @@ function PatientDetail() {
       }
     } catch (error) {
       console.error('Error updating patient data:', error);
-      // Handle the error (e.g., show an error message to the user)
     }
   };
 
-  const handleFieldChange = (field: keyof Patient, value: string) => {
+  const handleFieldChange = (field: keyof Patient | string, value: string) => {
     if (editedPatient) {
-      setEditedPatient({ ...editedPatient, [field]: value });
+      if (field in editedPatient) {
+        // Handle regular fields
+        setEditedPatient({ ...editedPatient, [field]: value });
+      } else {
+        // Handle extra fields
+        setEditedPatient({
+          ...editedPatient,
+          extraFields: {
+            ...editedPatient.extraFields,
+            [field]: value
+          }
+        });
+      }
+    }
+  };
+
+  const handleAddCustomField = (key: string, value: string) => {
+    console.log(`Adding custom field: ${key} = ${value}`);
+    if (editedPatient) {
+      setEditedPatient({
+        ...editedPatient,
+        extraFields: {
+          ...editedPatient.extraFields,
+          [key]: value
+        }
+      });
+      setOpenModal(false);
     }
   };
 
@@ -133,38 +162,46 @@ function PatientDetail() {
                   (value: string) => handleFieldChange('lastName', value)
                 )}
               </ListItem>
-              <List>
-                <ListItem>
-                  <ListItemText primary="DOB" secondary={formatDate(patient.dateOfBirth)} />
-                </ListItem>
-              </List>
-              <List>
-                <ListItem>
-                  <ListItemText primary="Status" secondary={patient.status} />
-                </ListItem>
-              </List>
-              <List>
-                <ListItem>
-                  <ListItemText primary="Address" secondary={patient.address} />
-                </ListItem>
-              </List>
-              <List>
-                <ListItem>
-                  <ListItemText primary="Patient ID" secondary={patient.patientId} />
-                </ListItem>
-              </List>
+              <ListItem>
+                <ListItemText primary="DOB" secondary={formatDate(editedPatient?.dateOfBirth || new Date())} />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary="Status" secondary={editedPatient?.status || ''} />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary="Address" secondary={editedPatient?.address || ''} />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary="Patient ID" secondary={editedPatient?.patientId || ''} />
+              </ListItem>
             </List>
           </Grid>
         </Grid>
         <Typography variant="h6" component="h2" gutterBottom>Custom Data Fields</Typography>
         <List>
-          {Object.entries(patient.extraFields).map(([key, value]) => (
+          {Object.entries(editedPatient?.extraFields || {}).map(([key, value]) => (
             <ListItem key={key}>
-              <ListItemText primary={key} secondary={value} />
+              {SwitchableExtraField(
+                editing,
+                key,
+                value,
+                (value: string) => handleFieldChange(key, value)
+              )}
             </ListItem>
           ))}
         </List>
+        {editing && (
+          <Button variant="outlined" onClick={() => setOpenModal(true)} sx={{ mt: 2 }}>
+            Add Custom Field
+          </Button>
+        )}
       </Paper>
+
+      <AddCustomFieldModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        onAdd={handleAddCustomField}
+      />
     </Container>
   );
 }
