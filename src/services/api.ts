@@ -1,8 +1,7 @@
-import { Patient } from '../types/Patient';
+import { newPatient, Patient } from '../types/Patient';
 
 const API_BASE_URL = 'http://localhost:3000';
 
-// Function to get all patients from the backend
 export const getPatients = async (): Promise<Patient[]> => {
   try {
     console.log(`Fetching patients from ${API_BASE_URL}/patients`);
@@ -19,7 +18,6 @@ export const getPatients = async (): Promise<Patient[]> => {
 
 };
 
-// Function to get a patient by ID
 export const getPatientById = async (patientId: string): Promise<Patient | undefined> => {
   try {
     const response = await fetch(`${API_BASE_URL}/patients/${patientId}`);
@@ -37,28 +35,26 @@ export const getPatientById = async (patientId: string): Promise<Patient | undef
   }
 };
 
-// // Function to add a new patient
-// export const addPatient = async (patient: Omit<Patient, 'id'>): Promise<Patient> => {
-//   try {
-//     const response = await fetch(`${API_BASE_URL}/patients`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(patient),
-//     });
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error('Error adding patient:', error);
-//     throw error;
-//   }
-// };
+export const addPatient = async (patient: newPatient): Promise<Patient> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/patients`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(patient),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error adding patient:', error);
+    throw error;
+  }
+};
 
-// Function to update a patient
 export const updatePatient = async (patient: Patient): Promise<Patient> => {
   try {
     const response = await fetch(`${API_BASE_URL}/patients/${patient.patientId}`, {

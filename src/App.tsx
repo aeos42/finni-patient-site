@@ -45,10 +45,19 @@ function App() {
     }
   };
 
+  const handleAddPatient = () => {
+    navigate('/patient/new');
+  };
+
   return (
     <div>
       <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-        <Button variant="contained">Add Patient</Button>
+        <Button 
+          variant="contained"
+          onClick={handleAddPatient}
+        >
+          Add Patient
+        </Button>
         <Button 
           variant="outlined" 
           disabled={selectedPatients.length !== 1}
