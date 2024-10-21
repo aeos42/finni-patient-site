@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Patient } from './types/Patient';
 
-import { DataGrid, GridRowSelectionModel } from '@mui/x-data-grid';
+import { DataGrid, GridRowSelectionModel, GridToolbar } from '@mui/x-data-grid';
 import { getPatients } from './services/api';
 import { mockPatients } from './mockPatients';
 import { Button, Stack } from '@mui/material';
@@ -61,6 +61,9 @@ function App() {
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid
           getRowId={(row) => row.patientId}
+          slots={{
+            toolbar: GridToolbar,
+          }}
           rows={patients}
           columns={[
             { field: 'patientId', headerName: 'ID', width: 70 },
