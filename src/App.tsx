@@ -93,7 +93,7 @@ function App() {
           disabled={selectedPatients.length === 0}
           onClick={handleDeletePatient}
         >
-          {selectedPatients.length === 1
+          {selectedPatients.length <= 1
             ? 'Delete Patient'
             : 'Delete Selected Patients'}
         </Button>
