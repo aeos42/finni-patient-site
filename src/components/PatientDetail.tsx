@@ -7,10 +7,8 @@ import {
   List,
   ListItem,
   ListItemText,
-  Divider,
   CircularProgress,
   Button,
-  IconButton,
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { Patient } from '../types/Patient';

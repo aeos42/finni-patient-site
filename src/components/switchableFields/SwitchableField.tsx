@@ -1,3 +1,4 @@
+import React from 'react';
 import TextField from '@mui/material/TextField';
 import ListItemText from '@mui/material/ListItemText';
 
@@ -6,7 +7,7 @@ function SwitchableField(
   fieldName: string,
   defaultValue: string,
   onChange: (value: string) => void,
-  multiline: boolean = false,
+  multiline = false,
 ) {
   if (editing) {
     return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Button } from '@mui/material';
+import { Stack } from '@mui/material';
 
 interface ButtonBarProps {
   children: React.ReactNode;
