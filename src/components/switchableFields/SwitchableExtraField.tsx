@@ -5,7 +5,6 @@ import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-
 function SwitchableExtraField(
   editing: boolean,
   fieldName: string,
@@ -18,7 +17,11 @@ function SwitchableExtraField(
       return (
         <Stack direction="row" spacing={2} alignItems="center">
           <TextField label="key" defaultValue={fieldName} disabled />
-          <TextField label="value" defaultValue={defaultValue} onChange={(e) => onChange(e.target.value)} />
+          <TextField
+            label="value"
+            defaultValue={defaultValue}
+            onChange={(e) => onChange(e.target.value)}
+          />
         </Stack>
       );
     } else {
@@ -27,15 +30,12 @@ function SwitchableExtraField(
   };
 
   return (
-      <Stack direction="row" spacing={2} alignItems="center">
-        {renderField()}
-        <IconButton
-          onClick={onMarkForDeletion}
-          size="small"
-        >
-          {editing && <DeleteIcon/>}
-        </IconButton>
-      </Stack>
+    <Stack direction="row" spacing={2} alignItems="center">
+      {renderField()}
+      <IconButton onClick={onMarkForDeletion} size="small">
+        {editing && <DeleteIcon />}
+      </IconButton>
+    </Stack>
   );
 }
 

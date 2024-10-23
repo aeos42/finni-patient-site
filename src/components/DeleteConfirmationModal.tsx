@@ -1,5 +1,14 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, List, ListItem, ListItemText } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+} from '@mui/material';
 import { Patient } from '../types/Patient';
 
 interface DeleteConfirmationModalProps {
@@ -13,7 +22,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   open,
   onClose,
   onConfirm,
-  patientsToDelete
+  patientsToDelete,
 }) => {
   return (
     <Dialog open={open} onClose={onClose}>
@@ -22,7 +31,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
         <List>
           {patientsToDelete.map((patient) => (
             <ListItem key={patient.patientId}>
-              <ListItemText 
+              <ListItemText
                 primary={`${patient.firstName} ${patient.lastName}`}
                 secondary={`ID: ${patient.patientId}`}
               />
@@ -32,7 +41,9 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={onConfirm} color="error">Confirm Delete</Button>
+        <Button onClick={onConfirm} color="error">
+          Confirm Delete
+        </Button>
       </DialogActions>
     </Dialog>
   );

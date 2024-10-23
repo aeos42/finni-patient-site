@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { 
-  Container, 
-  Typography, 
-  Paper, 
-  List, 
-  ListItem, 
-  ListItemText, 
+import {
+  Container,
+  Typography,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
   Divider,
   CircularProgress,
   Button,
-  IconButton
+  IconButton,
 } from '@mui/material';
-import Grid from '@mui/material/Grid2'
+import Grid from '@mui/material/Grid2';
 import { Patient } from '../types/Patient';
 import { getPatientById, updatePatient } from '../services/api';
 
@@ -31,7 +31,6 @@ function PatientDetail() {
   const [editedPatient, setEditedPatient] = useState<Patient | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [deletedFields, setDeletedFields] = useState<string[]>([]);
-
 
   useEffect(() => {
     if (patient) {
@@ -65,8 +64,8 @@ function PatientDetail() {
           ...editedPatient,
           extraFields: {
             ...editedPatient.extraFields,
-            [field]: value
-          }
+            [field]: value,
+          },
         });
       }
     }
@@ -79,8 +78,8 @@ function PatientDetail() {
         ...editedPatient,
         extraFields: {
           ...editedPatient.extraFields,
-          [key]: value
-        }
+          [key]: value,
+        },
       });
       setOpenModal(false);
     }
@@ -93,7 +92,7 @@ function PatientDetail() {
       delete updatedExtraFields[key];
       setEditedPatient({
         ...editedPatient,
-        extraFields: updatedExtraFields
+        extraFields: updatedExtraFields,
       });
     }
   };
@@ -111,7 +110,6 @@ function PatientDetail() {
           const data = await getPatientById(patientId);
           setPatient(data || null);
         }
-        
       } catch (error) {
         console.error('Error fetching patient:', error);
       } finally {
@@ -124,7 +122,14 @@ function PatientDetail() {
 
   if (loading) {
     return (
-      <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Container
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
         <CircularProgress />
       </Container>
     );
@@ -140,19 +145,25 @@ function PatientDetail() {
     );
   }
 
-
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
       <ButtonBar>
-        <Button variant="contained" onClick={() => {
-          if (editing) {
-            handleSave();
-          }
-          setEditing(!editing);
-        }}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            if (editing) {
+              handleSave();
+            }
+            setEditing(!editing);
+          }}
+        >
           {editing ? 'Save' : 'Edit Patient'}
         </Button>
-        {editing && <Button variant="contained" onClick={handleCancel}>Cancel</Button>}
+        {editing && (
+          <Button variant="contained" onClick={handleCancel}>
+            Cancel
+          </Button>
+        )}
       </ButtonBar>
       <Paper elevation={3} sx={{ p: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom>
@@ -166,7 +177,7 @@ function PatientDetail() {
                   editing,
                   'First Name',
                   editedPatient?.firstName || '',
-                  (value: string) => handleFieldChange('firstName', value)
+                  (value: string) => handleFieldChange('firstName', value),
                 )}
               </ListItem>
               <ListItem>
@@ -174,7 +185,7 @@ function PatientDetail() {
                   editing,
                   'Last Name',
                   editedPatient?.lastName || '',
-                  (value: string) => handleFieldChange('lastName', value)
+                  (value: string) => handleFieldChange('lastName', value),
                 )}
               </ListItem>
               <ListItem>
@@ -182,7 +193,8 @@ function PatientDetail() {
                   editing,
                   'DOB',
                   editedPatient?.dateOfBirth || new Date(),
-                  (value: Date) => handleFieldChange('dateOfBirth', value.toISOString())
+                  (value: Date) =>
+                    handleFieldChange('dateOfBirth', value.toISOString()),
                 )}
               </ListItem>
               <ListItem>
@@ -191,7 +203,7 @@ function PatientDetail() {
                   'Status',
                   editedPatient?.status || '',
                   ['Active', 'Onboarding', 'Churned', 'Inquiry'],
-                  (value: string) => handleFieldChange('status', value)
+                  (value: string) => handleFieldChange('status', value),
                 )}
               </ListItem>
               <ListItem>
@@ -200,31 +212,42 @@ function PatientDetail() {
                   'Address',
                   editedPatient?.address || '',
                   (value: string) => handleFieldChange('address', value),
-                  true
+                  true,
                 )}
               </ListItem>
               <ListItem>
-                <ListItemText primary="Patient ID" secondary={editedPatient?.patientId || ''} />
+                <ListItemText
+                  primary="Patient ID"
+                  secondary={editedPatient?.patientId || ''}
+                />
               </ListItem>
             </List>
           </Grid>
         </Grid>
-        <Typography variant="h6" component="h2" gutterBottom>Custom Data Fields</Typography>
+        <Typography variant="h6" component="h2" gutterBottom>
+          Custom Data Fields
+        </Typography>
         <List>
-          {Object.entries(editedPatient?.extraFields || {}).map(([key, value]) => (
-            <ListItem key={key}>
-              {SwitchableExtraField(
-                editing,
-                key,
-                value,
-                (value: string) => handleFieldChange(key, value),
-                () => handleDeleteExtraField(key)
-              )}
-            </ListItem>
-          ))}
+          {Object.entries(editedPatient?.extraFields || {}).map(
+            ([key, value]) => (
+              <ListItem key={key}>
+                {SwitchableExtraField(
+                  editing,
+                  key,
+                  value,
+                  (value: string) => handleFieldChange(key, value),
+                  () => handleDeleteExtraField(key),
+                )}
+              </ListItem>
+            ),
+          )}
         </List>
         {editing && (
-          <Button variant="outlined" onClick={() => setOpenModal(true)} sx={{ mt: 2 }}>
+          <Button
+            variant="outlined"
+            onClick={() => setOpenModal(true)}
+            sx={{ mt: 2 }}
+          >
             Add Custom Field
           </Button>
         )}

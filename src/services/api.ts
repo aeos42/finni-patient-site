@@ -15,10 +15,11 @@ export const getPatients = async (): Promise<Patient[]> => {
     console.error('Error fetching patients:', error);
     throw error;
   }
-
 };
 
-export const getPatientById = async (patientId: string): Promise<Patient | undefined> => {
+export const getPatientById = async (
+  patientId: string,
+): Promise<Patient | undefined> => {
   try {
     const response = await fetch(`${API_BASE_URL}/patients/${patientId}`);
     if (!response.ok) {
@@ -31,7 +32,7 @@ export const getPatientById = async (patientId: string): Promise<Patient | undef
     return data;
   } catch (error) {
     console.error(`Error fetching patient with id ${patientId}:`, error);
-    throw error;  
+    throw error;
   }
 };
 
@@ -57,13 +58,16 @@ export const addPatient = async (patient: newPatient): Promise<Patient> => {
 
 export const updatePatient = async (patient: Patient): Promise<Patient> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/patients/${patient.patientId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${API_BASE_URL}/patients/${patient.patientId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(patient),
       },
-      body: JSON.stringify(patient),
-    });
+    );
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

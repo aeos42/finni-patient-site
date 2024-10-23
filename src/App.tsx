@@ -14,7 +14,8 @@ const useMockData = process.env.REACT_APP_USE_MOCK_DATA === 'true';
 
 function App() {
   const [patients, setPatients] = useState<Patient[]>([]);
-  const [selectedPatients, setSelectedPatients] = useState<GridRowSelectionModel>([]);
+  const [selectedPatients, setSelectedPatients] =
+    useState<GridRowSelectionModel>([]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const navigate = useNavigate();
 
@@ -23,7 +24,7 @@ function App() {
       if (useMockData) {
         setPatients(mockPatients);
       } else {
-        const data = await getPatients();    
+        const data = await getPatients();
         setPatients(data);
         console.log('Fetched patients:', data);
       }
@@ -59,7 +60,7 @@ function App() {
     console.log('Deleting patients:', selectedPatients);
     for (const patientId of selectedPatients) {
       await deletePatient(patientId.toString());
-    } 
+    }
     setOpenDeleteModal(false);
     setSelectedPatients([]);
     await fetchPatients();
@@ -69,31 +70,32 @@ function App() {
     setOpenDeleteModal(false);
   };
 
-  const patientsToDelete = patients.filter(patient => selectedPatients.includes(patient.patientId));
+  const patientsToDelete = patients.filter((patient) =>
+    selectedPatients.includes(patient.patientId),
+  );
 
   return (
     <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
       <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
-        <Button 
-          variant="contained"
-          onClick={handleAddPatient}
-        >
+        <Button variant="contained" onClick={handleAddPatient}>
           Add Patient
         </Button>
-        <Button 
-          variant="outlined" 
+        <Button
+          variant="outlined"
           disabled={selectedPatients.length !== 1}
           onClick={handleViewPatient}
         >
           View Patient
         </Button>
-        <Button 
+        <Button
           variant="outlined"
           color="error"
           disabled={selectedPatients.length === 0}
           onClick={handleDeletePatient}
         >
-          {selectedPatients.length === 1 ? 'Delete Patient' : 'Delete Selected Patients'}
+          {selectedPatients.length === 1
+            ? 'Delete Patient'
+            : 'Delete Selected Patients'}
         </Button>
       </Stack>
       <div style={{ height: '100%', width: '100%' }}>

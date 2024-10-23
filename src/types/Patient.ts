@@ -10,4 +10,3 @@ export interface Patient extends newPatient {
   extraFields: Record<string, any>;
   patientId: string;
 }
-

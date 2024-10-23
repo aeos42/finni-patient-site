@@ -3,10 +3,16 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  ListItemText
+  ListItemText,
 } from '@mui/material';
 
-function SwitchableDropdown(editing: boolean, label: string, value: string, options: string[], onChange: (value: string) => void) {
+function SwitchableDropdown(
+  editing: boolean,
+  label: string,
+  value: string,
+  options: string[],
+  onChange: (value: string) => void,
+) {
   if (editing) {
     return (
       <FormControl>

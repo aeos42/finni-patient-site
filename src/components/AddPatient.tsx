@@ -16,14 +16,20 @@ const AddPatient: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setPatient(prev => ({ ...prev, [name]: value }));
+    setPatient((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       // Ensure all required fields are filled
-      if (!patient.firstName || !patient.lastName || !patient.dateOfBirth || !patient.status || !patient.address) {
+      if (
+        !patient.firstName ||
+        !patient.lastName ||
+        !patient.dateOfBirth ||
+        !patient.status ||
+        !patient.address
+      ) {
         throw new Error('All fields are required');
       }
 
@@ -32,7 +38,7 @@ const AddPatient: React.FC = () => {
         lastName: patient.lastName,
         dateOfBirth: patient.dateOfBirth,
         status: 'Inquiry',
-        address: patient.address
+        address: patient.address,
       };
 
       await addPatient(createPatient);

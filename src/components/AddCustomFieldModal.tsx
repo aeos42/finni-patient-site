@@ -14,7 +14,11 @@ interface AddCustomFieldModalProps {
   onAdd: (key: string, value: string) => void;
 }
 
-const AddCustomFieldModal: React.FC<AddCustomFieldModalProps> = ({ open, onClose, onAdd }) => {
+const AddCustomFieldModal: React.FC<AddCustomFieldModalProps> = ({
+  open,
+  onClose,
+  onAdd,
+}) => {
   const [newFieldKey, setNewFieldKey] = useState('');
   const [newFieldValue, setNewFieldValue] = useState('');
 

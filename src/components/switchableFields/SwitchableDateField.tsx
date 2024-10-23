@@ -1,10 +1,12 @@
 import TextField from '@mui/material/TextField';
 import ListItemText from '@mui/material/ListItemText';
 
-
-
-function SwitchableDateField(editing: boolean, fieldName: string, defaultValue: Date, onChange: (value: Date) => void) {
-
+function SwitchableDateField(
+  editing: boolean,
+  fieldName: string,
+  defaultValue: Date,
+  onChange: (value: Date) => void,
+) {
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString();
   };
@@ -14,9 +16,19 @@ function SwitchableDateField(editing: boolean, fieldName: string, defaultValue: 
   };
 
   if (editing) {
-    return <TextField InputLabelProps={{ shrink: true }} label={fieldName} defaultValue={dateToString(defaultValue)} type="date" onChange={(e) => onChange(new Date(e.target.value))} />
+    return (
+      <TextField
+        InputLabelProps={{ shrink: true }}
+        label={fieldName}
+        defaultValue={dateToString(defaultValue)}
+        type="date"
+        onChange={(e) => onChange(new Date(e.target.value))}
+      />
+    );
   } else {
-    return <ListItemText primary={fieldName} secondary={formatDate(defaultValue)} />
+    return (
+      <ListItemText primary={fieldName} secondary={formatDate(defaultValue)} />
+    );
   }
 }
 

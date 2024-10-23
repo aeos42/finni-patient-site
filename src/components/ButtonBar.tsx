@@ -7,14 +7,14 @@ interface ButtonBarProps {
 
 const ButtonBar: React.FC<ButtonBarProps> = ({ children }) => {
   return (
-    <Stack 
-      direction="row" 
-      spacing={2} 
-      sx={{ 
-        mb: 2, 
-        p: 2, 
-        backgroundColor: '#f5f5f5', 
-        borderRadius: 1 
+    <Stack
+      direction="row"
+      spacing={2}
+      sx={{
+        mb: 2,
+        p: 2,
+        backgroundColor: '#f5f5f5',
+        borderRadius: 1,
       }}
     >
       {children}
