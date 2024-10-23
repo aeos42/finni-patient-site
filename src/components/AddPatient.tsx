@@ -28,11 +28,11 @@ const AddPatient: React.FC = () => {
       }
 
       const createPatient: newPatient = {
-        firstName: patient.firstName!,
-        lastName: patient.lastName!,
-        dateOfBirth: patient.dateOfBirth!,
+        firstName: patient.firstName,
+        lastName: patient.lastName,
+        dateOfBirth: patient.dateOfBirth,
         status: 'Inquiry',
-        address: patient.address!
+        address: patient.address
       };
 
       await addPatient(createPatient);
@@ -45,8 +45,8 @@ const AddPatient: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Typography variant="h4" gutterBottom>
+    <form onSubmit={handleSubmit} style={{ marginTop: '2rem' }}>
+      <Typography variant="h5" gutterBottom align="center" sx={{ mb: 3 }}>
         Add New Patient
       </Typography>
       <Stack spacing={2} sx={{ maxWidth: 400, margin: 'auto' }}>

@@ -72,8 +72,8 @@ function App() {
   const patientsToDelete = patients.filter(patient => selectedPatients.includes(patient.patientId));
 
   return (
-    <div>
-      <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+    <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+      <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
         <Button 
           variant="contained"
           onClick={handleAddPatient}
@@ -120,6 +120,21 @@ function App() {
           checkboxSelection
           onRowSelectionModelChange={handleRowSelection}
           rowSelectionModel={selectedPatients}
+          sx={{
+            '& .MuiDataGrid-root': {
+              border: 'none',
+            },
+            '& .MuiDataGrid-cell': {
+              borderBottom: '1px solid #f0f0f0',
+            },
+            '& .MuiDataGrid-columnHeaders': {
+              backgroundColor: '#f5f5f5',
+              borderBottom: 'none',
+            },
+            '& .MuiDataGrid-virtualScroller': {
+              backgroundColor: '#fff',
+            },
+          }}
         />
       </div>
       <DeleteConfirmationModal

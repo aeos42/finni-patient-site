@@ -10,7 +10,7 @@ function AppRouter() {
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/patient/:patientId" element={<PatientDetail />} />
-        <Route path="/patient/new" element={<AddPatient />} /> // Add this route
+        <Route path="/patient/new" element={<AddPatient />} />
       </Routes>
     </Router>
   );
