@@ -89,6 +89,7 @@ function App() {
         </Button>
         <Button 
           variant="outlined"
+          color="error"
           disabled={selectedPatients.length === 0}
           onClick={handleDeletePatient}
         >

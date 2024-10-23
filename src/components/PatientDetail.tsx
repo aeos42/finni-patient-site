@@ -30,6 +30,8 @@ function PatientDetail() {
   const [editing, setEditing] = useState(false);
   const [editedPatient, setEditedPatient] = useState<Patient | null>(null);
   const [openModal, setOpenModal] = useState(false);
+  const [deletedFields, setDeletedFields] = useState<string[]>([]);
+
 
   useEffect(() => {
     if (patient) {
@@ -84,6 +86,23 @@ function PatientDetail() {
     }
   };
 
+  const handleDeleteExtraField = (key: string) => {
+    setDeletedFields([...deletedFields, key]);
+    if (editedPatient) {
+      const updatedExtraFields = { ...editedPatient.extraFields };
+      delete updatedExtraFields[key];
+      setEditedPatient({
+        ...editedPatient,
+        extraFields: updatedExtraFields
+      });
+    }
+  };
+
+  const handleCancel = () => {
+    setEditing(false);
+    setEditedPatient(patient);
+  };
+
   useEffect(() => {
     const fetchPatient = async () => {
       try {
@@ -133,7 +152,7 @@ function PatientDetail() {
         }}>
           {editing ? 'Save' : 'Edit Patient'}
         </Button>
-        {editing && <Button variant="contained" onClick={() => setEditing(!editing)}>Cancel</Button>}
+        {editing && <Button variant="contained" onClick={handleCancel}>Cancel</Button>}
       </ButtonBar>
       <Paper elevation={3} sx={{ p: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom>
@@ -198,7 +217,8 @@ function PatientDetail() {
                 editing,
                 key,
                 value,
-                (value: string) => handleFieldChange(key, value)
+                (value: string) => handleFieldChange(key, value),
+                () => handleDeleteExtraField(key)
               )}
             </ListItem>
           ))}
