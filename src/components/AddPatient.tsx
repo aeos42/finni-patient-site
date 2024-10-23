@@ -27,12 +27,11 @@ const AddPatient: React.FC = () => {
         throw new Error('All fields are required');
       }
 
-      // Convert Partial<Patient> to Omit<Patient, "id">
       const createPatient: newPatient = {
         firstName: patient.firstName!,
         lastName: patient.lastName!,
         dateOfBirth: patient.dateOfBirth!,
-        status: patient.status as 'Inquiry' | 'Onboarding' | 'Active' | 'Churned',
+        status: 'Inquiry',
         address: patient.address!
       };
 
@@ -72,13 +71,6 @@ const AddPatient: React.FC = () => {
           value={patient.dateOfBirth}
           onChange={handleChange}
           InputLabelProps={{ shrink: true }}
-          required
-        />
-        <TextField
-          name="status"
-          label="Status"
-          value={patient.status}
-          onChange={handleChange}
           required
         />
         <TextField

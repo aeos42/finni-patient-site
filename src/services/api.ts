@@ -74,3 +74,12 @@ export const updatePatient = async (patient: Patient): Promise<Patient> => {
     throw error;
   }
 };
+
+export const deletePatient = async (patientId: string): Promise<void> => {
+  try {
+    await fetch(`${API_BASE_URL}/patients/${patientId}`, { method: 'DELETE' });
+  } catch (error) {
+    console.error(`Error deleting patient with id ${patientId}:`, error);
+    throw error;
+  }
+};

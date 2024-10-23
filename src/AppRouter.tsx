@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import App from './App';
-import PatientDetail from './PatientDetail';
+import PatientDetail from './components/PatientDetail';
 import AddPatient from './components/AddPatient'; // Add this import
 
 function AppRouter() {

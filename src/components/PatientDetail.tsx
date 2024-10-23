@@ -13,15 +13,15 @@ import {
   IconButton
 } from '@mui/material';
 import Grid from '@mui/material/Grid2'
-import { Patient } from './types/Patient';
-import { getPatientById, updatePatient } from './services/api';
+import { Patient } from '../types/Patient';
+import { getPatientById, updatePatient } from '../services/api';
 
-import ButtonBar from './components/ButtonBar';
-import SwitchableField from './components/SwitchableField';
-import SwitchableExtraField from './components/SwitchableExtraField';
-import AddCustomFieldModal from './components/AddCustomFieldModal';
-import SwitchableDateField from './components/SwitchableDateField';
-import SwitchableDropdown from './components/SwitchableDropDown';
+import ButtonBar from './ButtonBar';
+import SwitchableField from './switchableFields/SwitchableField';
+import SwitchableExtraField from './switchableFields/SwitchableExtraField';
+import AddCustomFieldModal from './AddCustomFieldModal';
+import SwitchableDateField from './switchableFields/SwitchableDateField';
+import SwitchableDropdown from './switchableFields/SwitchableDropDown';
 
 function PatientDetail() {
   const { patientId } = useParams();
@@ -171,12 +171,18 @@ function PatientDetail() {
                   editing,
                   'Status',
                   editedPatient?.status || '',
-                  ['Active', 'Inactive', 'Pending'],
+                  ['Active', 'Onboarding', 'Churned', 'Inquiry'],
                   (value: string) => handleFieldChange('status', value)
                 )}
               </ListItem>
               <ListItem>
-                <ListItemText primary="Address" secondary={editedPatient?.address || ''} />
+                {SwitchableField(
+                  editing,
+                  'Address',
+                  editedPatient?.address || '',
+                  (value: string) => handleFieldChange('address', value),
+                  true
+                )}
               </ListItem>
               <ListItem>
                 <ListItemText primary="Patient ID" secondary={editedPatient?.patientId || ''} />

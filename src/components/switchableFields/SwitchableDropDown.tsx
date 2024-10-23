@@ -9,7 +9,7 @@ import {
 function SwitchableDropdown(editing: boolean, label: string, value: string, options: string[], onChange: (value: string) => void) {
   if (editing) {
     return (
-      <FormControl fullWidth>
+      <FormControl>
         <InputLabel id={`${label.toLowerCase()}-label`}>{label}</InputLabel>
         <Select
           labelId={`${label.toLowerCase()}-label`}

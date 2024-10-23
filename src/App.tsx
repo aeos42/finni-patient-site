@@ -3,10 +3,11 @@ import './App.css';
 import { Patient } from './types/Patient';
 
 import { DataGrid, GridRowSelectionModel, GridToolbar } from '@mui/x-data-grid';
-import { getPatients } from './services/api';
+import { deletePatient, getPatients } from './services/api';
 import { mockPatients } from './mockPatients';
 import { Button, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import DeleteConfirmationModal from './components/DeleteConfirmationModal';
 
 // Check the environment variable
 const useMockData = process.env.REACT_APP_USE_MOCK_DATA === 'true';
@@ -14,6 +15,7 @@ const useMockData = process.env.REACT_APP_USE_MOCK_DATA === 'true';
 function App() {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [selectedPatients, setSelectedPatients] = useState<GridRowSelectionModel>([]);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const navigate = useNavigate();
 
   const fetchPatients = async () => {
@@ -49,6 +51,26 @@ function App() {
     navigate('/patient/new');
   };
 
+  const handleDeletePatient = () => {
+    setOpenDeleteModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    console.log('Deleting patients:', selectedPatients);
+    for (const patientId of selectedPatients) {
+      await deletePatient(patientId.toString());
+    } 
+    setOpenDeleteModal(false);
+    setSelectedPatients([]);
+    await fetchPatients();
+  };
+
+  const handleCancelDelete = () => {
+    setOpenDeleteModal(false);
+  };
+
+  const patientsToDelete = patients.filter(patient => selectedPatients.includes(patient.patientId));
+
   return (
     <div>
       <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
@@ -65,9 +87,15 @@ function App() {
         >
           View Patient
         </Button>
-        <Button variant="outlined">Delete Patient</Button>
+        <Button 
+          variant="outlined"
+          disabled={selectedPatients.length === 0}
+          onClick={handleDeletePatient}
+        >
+          {selectedPatients.length === 1 ? 'Delete Patient' : 'Delete Selected Patients'}
+        </Button>
       </Stack>
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height: '100%', width: '100%' }}>
         <DataGrid
           getRowId={(row) => row.patientId}
           slots={{
@@ -84,15 +112,21 @@ function App() {
           ]}
           initialState={{
             pagination: {
-              paginationModel: { pageSize: 5 },
+              paginationModel: { pageSize: 25 },
             },
           }}
-          pageSizeOptions={[5]}
+          pageSizeOptions={[5, 10, 25]}
           checkboxSelection
           onRowSelectionModelChange={handleRowSelection}
           rowSelectionModel={selectedPatients}
         />
       </div>
+      <DeleteConfirmationModal
+        open={openDeleteModal}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        patientsToDelete={patientsToDelete}
+      />
     </div>
   );
 }
